@@ -1,3 +1,0 @@
-[17980:18172:0715/232929.097:WARNING:CONSOLE(0)] "HTML Imports is deprecated and will be removed in M73, around March 2019. Please use ES modules instead. See https://www.chromestatus.com/features/5144752345317376 for more details.", source:  (0)
-[17980:17832:0715/232929.517:WARNING:leveldb_database.cc(106)] Unable to open C:\Users\renan\Documents\Python Scripts\Whatsapp Bot\profile\wpp\Default\shared_proto_db: Invalid argument: C:\Users\renan\Documents\Python Scripts\Whatsapp Bot\profile\wpp\Default\shared_proto_db: does not exist (create_if_missing is false)
-[17980:20736:0715/232934.303:ERROR:wmi_refresher.cc(150)] Unable to add the Win32_PerfRawData_PerfDisk_PhysicalDisk enum.
