@@ -14,7 +14,7 @@ import pyperclip
 import itertools
 
 
-
+print('Chrome: starting')
 #Setamos o caminho de nossa aplicação.
 dir_path = os.getcwd()
 #Setamos onde está nosso chromedriver.
@@ -22,6 +22,7 @@ chrome = dir_path+'\chromedriver.exe'
 #Configuramos um profile no chrome para não precisar logar no whats toda vez que iniciar o bot.
 options = webdriver.ChromeOptions()
 options.add_argument(r"user-data-dir="+dir_path+"\profile\wpp")
+options.add_argument("--headless")  
 #Iniciamos o driver.
 driver = webdriver.Chrome(chrome, options=options)
 
@@ -30,7 +31,7 @@ driver.get('https://web.whatsapp.com/')
 driver.implicitly_wait(10)
 
 #caixa_de_pesquisa = driver.find_element_by_class_name('_2zCfw')
-
+print('Chrome: ok')
 
 
 def mensagem():
@@ -105,13 +106,17 @@ def mtg(card):
 if __name__ == '__main__':
 
     ultimo_texto = '' 
-
+    x = 0
+    print('Iniciando loop')
     while True:
         time.sleep(1)
         contatos = driver.find_elements_by_class_name('_2WP9Q')
 
         for i in itertools.cycle(range(len(contatos))):
-            
+            if x== 100:
+            	print('Loop:'+srt(x))
+            	x = 0
+            x+=1
             contatos[i].click()
             time.sleep(2)
             gotofim()
