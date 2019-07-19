@@ -29,7 +29,7 @@ driver = webdriver.Chrome(chrome, options=options)
 driver.get('https://web.whatsapp.com/')
 driver.implicitly_wait(10)
 
-caixa_de_pesquisa = driver.find_element_by_class_name('_2zCfw')
+#caixa_de_pesquisa = driver.find_element_by_class_name('_2zCfw')
 
 
 
@@ -111,26 +111,25 @@ if __name__ == '__main__':
         contatos = driver.find_elements_by_class_name('_2WP9Q')
 
         for i in itertools.cycle(range(len(contatos))):
-            if contatos[i].find_elements_by_xpath(".//span[@class= 'P6z4j']") != []:
-                
-                unread = contatos[i].find_elements_by_xpath(".//span[@class= 'P6z4j']")
-                contatos[i].click()
-                gotofim()
-                texto = escuta()
-                match = re.search("!!(.+?)##", texto,flags=re.IGNORECASE)
+            
+            contatos[i].click()
+            time.sleep(2)
+            gotofim()
+            texto = escuta()
+            match = re.search("!!(.+?)##", texto,flags=re.IGNORECASE)
+            try:
+                resp = match.group(1).strip()
+            except:
+                resp = ''
+            if ultimo_texto != texto and resp != '':
+                ultimo_texto = texto
+                pyperclip.copy('Pesquisando card: *'+resp+'*')
+                mensagem()
                 try:
-                    resp = match.group(1).strip()
+                    pyperclip.copy(mtg(resp))
+                    mensagem()
                 except:
-                    resp = ''
-                if ultimo_texto != texto and resp != '':
-                    ultimo_texto = texto
-                    pyperclip.copy('Pesquisando card: *'+resp+'*')
-                    mensagem('x')
-                    try:
-                        pyperclip.copy(mtg(resp))
-                        mensagem('x')
-                    except:
-                        mensagem('Erro')
+                    mensagem()
 
 
     
