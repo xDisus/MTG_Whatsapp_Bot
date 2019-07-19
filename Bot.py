@@ -11,9 +11,8 @@ from selenium import webdriver
 import requests
 from selenium.webdriver.common.keys import Keys
 import pyperclip
+import itertools
 
-
-# In[2]:
 
 
 #Setamos o caminho de nossa aplicação.
@@ -33,37 +32,21 @@ driver.implicitly_wait(10)
 caixa_de_pesquisa = driver.find_element_by_class_name('_2zCfw')
 
 
-# In[3]:
+
+def mensagem():
 
 
-def mensagem(mensagem):
-    nome_contato = 'Nelson da Trabalhação'
-
-    #Selecionamos o elemento da caixa de pesquisa do whats pela classe.
-
-    #Escreveremos o nome do contato na caixa de pesquisa e aguardaremos 2 segundos.
-
-
-    #Ao usar este método devemos enviar a mensagem de saudação em uma lista.
-    frase_inicial = [mensagem]
-    #Setamos a caixa de mensagem como o elemento com a classe _2S1VP.
+    #Setamos a caixa de mensagem.
     caixa_de_mensagem = driver.find_element_by_class_name('_3u328')
-    #Validamos se a frase inicial é uma lista.
-    if type(frase_inicial) == list:
-    #Realizamos um for para enviar cada mensagem na lista.
-        for frase in frase_inicial:
-    #Escrevemos a frase na caixa de mensagem.
-            #caixa_de_mensagem.send_keys(frase)
+    #Enviamos o comando CTRL V (colar) para adicionar a informação da carta
+           
+    caixa_de_mensagem.send_keys(Keys.CONTROL, 'v')
             
-            caixa_de_mensagem.send_keys(Keys.CONTROL, 'v')
-            
-            time.sleep(1)
+    time.sleep(1)
     #Setamos o botão de enviar e clicamos para enviar.
-            botao_enviar = driver.find_element_by_class_name('_3M-N-')
-            botao_enviar.click()
-            time.sleep(1)
-    else:
-        False
+    botao_enviar = driver.find_element_by_class_name('_3M-N-')
+    botao_enviar.click()
+    time.sleep(1)
 
         
 def escuta():
@@ -115,36 +98,40 @@ def mtg(card):
     return carta_resposta    
 
 
-# In[ ]:
 
 
-ultimo_texto = '' 
-nome_contato = 'Nelson da Trabalhação'
-#nome_contato = 'Renan Clementino'
-caixa_de_pesquisa.send_keys(nome_contato)
-time.sleep(2)
-#Vamos procurar o contato/grupo que está em um span e possui o título igual que buscamos e vamos clicar.   
-contato = driver.find_element_by_xpath('//span[@title = "{}"]'.format(nome_contato))
-contato.click()
 
-gotofim()
 
-while True:
-    time.sleep(1)
-    texto = escuta()
-    match = re.search("!!(.+?)##", texto,flags=re.IGNORECASE)
-    try:
-        resp = match.group(1).strip()
-    except:
-        resp = ''
-    if ultimo_texto != texto and resp != '':
-        ultimo_texto = texto
-        pyperclip.copy('Pesquisando card: *'+resp+'*')
-        mensagem('x')
-        try:
-            pyperclip.copy(mtg(resp))
-            mensagem('x')
-        except:
-            mensagem('Erro')
+if __name__ == '__main__':
+
+    ultimo_texto = '' 
+
+    while True:
+        time.sleep(1)
+        contatos = driver.find_elements_by_class_name('_2WP9Q')
+
+        for i in itertools.cycle(range(len(contatos))):
+            if contatos[i].find_elements_by_xpath(".//span[@class= 'P6z4j']") != []:
+                
+                unread = contatos[i].find_elements_by_xpath(".//span[@class= 'P6z4j']")
+                contatos[i].click()
+                gotofim()
+                texto = escuta()
+                match = re.search("!!(.+?)##", texto,flags=re.IGNORECASE)
+                try:
+                    resp = match.group(1).strip()
+                except:
+                    resp = ''
+                if ultimo_texto != texto and resp != '':
+                    ultimo_texto = texto
+                    pyperclip.copy('Pesquisando card: *'+resp+'*')
+                    mensagem('x')
+                    try:
+                        pyperclip.copy(mtg(resp))
+                        mensagem('x')
+                    except:
+                        mensagem('Erro')
+
+
     
 
