@@ -22,7 +22,7 @@ chrome = dir_path+'\chromedriver.exe'
 #Configuramos um profile no chrome para não precisar logar no whats toda vez que iniciar o bot.
 options = webdriver.ChromeOptions()
 options.add_argument(r"user-data-dir="+dir_path+"\profile\wpp")
-options.add_argument("--headless")  
+#options.add_argument("--headless")  
 #Iniciamos o driver.
 driver = webdriver.Chrome(chrome, options=options)
 
